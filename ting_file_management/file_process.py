@@ -1,26 +1,37 @@
-from ting_file_management import txt_importer
+from ting_file_management.file_management import txt_importer
+
+processed = set()
 
 
 def process(path_file, instance):
-    file_name = path_file.split("/")[-1]
-
-    if any(item["nome_do_arquvo"] == file_name for item in instance._data):
-        return None
+    for item in instance._data:
+        if item["nome_do_arquivo"] == path_file:
+            return
 
     lines = txt_importer(path_file)
-    dict = {
+    data = {
         "nome_do_arquivo": path_file,
         "qtd_linhas": len(lines),
         "linhas_do_arquivo": lines,
     }
 
-    instance.enqueue(dict)
+    instance.enqueue(data)
 
-    print(dict)
+    processed.add(path_file)
+
+    print(data)
 
 
 def remove(instance):
-    """Aqui irá sua implementação"""
+    if instance.is_empty():
+        print("Não há elementos")
+        return
+
+    info_to_remove = instance.dequeue()
+
+    path_file = info_to_remove["nome_do_arquivo"]
+
+    print(f"Arquivo {path_file} removido com sucesso")
 
 
 def file_metadata(instance, position):
