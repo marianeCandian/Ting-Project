@@ -4,7 +4,7 @@ from ting_file_management import txt_importer
 def process(path_file, instance):
     file_name = path_file.split("/")[-1]
 
-    if any(item["nome_do_arquvo"] == file_nema for item in instance._data):
+    if any(item["nome_do_arquvo"] == file_name for item in instance._data):
         return None
 
     lines = txt_importer(path_file)
